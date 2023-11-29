@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                <div class="card-header">Enter OTP</div>
 
                 <div class="card-body">
                     @if (session('error'))
@@ -13,16 +13,16 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                    <form method="POST" action="{{ route('userGetOtp') }}">
+                    <form method="POST" action="{{ route('userVerifyOtp') }}">
                         @csrf
-
+                        <input type="hidden" name="email" value="{{ session('email') }}">
                         <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+                            <label for="otp" class="col-md-4 col-form-label text-md-end">OTP</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="otp" type="text" maxlength="6" class="form-control @error('otp') is-invalid @enderror" name="otp" value="{{ old('otp') }}" required autocomplete="otp" autofocus>
 
-                                @error('email')
+                                @error('otp')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -59,7 +59,7 @@
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Get OTP
+                                    Submit
                                 </button>
 
                                 <!-- @if (Route::has('password.request'))
