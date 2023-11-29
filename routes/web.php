@@ -13,10 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Auth::routes();
+Route::get('/admin/login', [App\Http\Controllers\Auth\LoginController::class, 'showAdminLoginForm']);
+
+Route::middleware(['web','auth','checkRole:user'])->group(function () {
+Route::get('/', [App\Http\Controllers\UserController::class, 'index']);
+Route::get('/home', [App\Http\Controllers\UserController::class, 'index'])->name('home');
 });
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['web','auth','checkRole:admin'])->prefix('admin')->group(function () {
+    Route::get('/', [App\Http\Controllers\AdminController::class, 'index']);
+    Route::get('/index', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
+});
